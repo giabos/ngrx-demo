@@ -9,7 +9,8 @@ import { StoreModule } from '@ngrx/store';
 import { StoreDevtoolsModule } from '@ngrx/store-devtools';
 import { counterReducer } from './counter.reducer';
 
-
+import { I18NextModule } from 'angular-i18next';
+import {I18N_PROVIDERS} from './i18next';
 
 @NgModule({
   declarations: [
@@ -23,8 +24,11 @@ import { counterReducer } from './counter.reducer';
       maxAge: 25, // Retains last 25 states
       //logOnly: environment.production, // Restrict extension to log-only mode
     }),
+    I18NextModule.forRoot(),
   ],
-  providers: [],
+  providers: [
+    I18N_PROVIDERS,
+  ],
   //bootstrap: [AppComponent],
   entryComponents: [Demo1Component]
 
