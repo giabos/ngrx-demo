@@ -1,9 +1,12 @@
 import { BrowserModule } from '@angular/platform-browser';
-import { NgModule, Injector } from '@angular/core';
+import { NgModule, Injector, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import {createCustomElement } from '@angular/elements';
 
 import { AppComponent } from './app.component';
 import { Demo1Component } from './components/demo1/demo1.component';
+import { UploadDocsComponent } from './components/upload-docs/UploadDocs.component';
+import { UploadAreaComponent } from './components/upload-docs/UploadArea.component';
+import { UploadDocumentsService } from './components/upload-docs/UploadDocuments.service';
 
 import { StoreModule } from '@ngrx/store';
 import { StoreDevtoolsModule } from '@ngrx/store-devtools';
@@ -11,11 +14,15 @@ import { counterReducer } from './counter.reducer';
 
 import { I18NextModule } from 'angular-i18next';
 import {I18N_PROVIDERS} from './i18next';
+import { DndDirective } from './components/upload-docs/dnd.directive';
 
 @NgModule({
   declarations: [
     AppComponent,
-    Demo1Component
+    Demo1Component,
+    UploadDocsComponent,
+    UploadAreaComponent,
+    DndDirective,
   ],
   imports: [
     BrowserModule,
@@ -28,9 +35,11 @@ import {I18N_PROVIDERS} from './i18next';
   ],
   providers: [
     I18N_PROVIDERS,
+    UploadDocumentsService,
   ],
-  //bootstrap: [AppComponent],
-  entryComponents: [Demo1Component]
+  bootstrap: [AppComponent],
+  entryComponents: [Demo1Component, UploadDocsComponent/*, UploadAreaComponent*/],
+  schemas: [ CUSTOM_ELEMENTS_SCHEMA ]
 
 })
 export class AppModule { 
@@ -39,6 +48,7 @@ export class AppModule {
   ngDoBootstrap() {
     const elements: any[] = [
       [Demo1Component, 'demo1-component'],
+      [UploadDocsComponent, 'upload-docs'],
     ]; 
 
     for(const [c, name] of elements)

@@ -1,0 +1,70 @@
+$padding: 15px;
+
+$border-color: #e2e2e2;
+$adesa-green: #84bd00;
+
+
+
+.box {
+    header {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        padding: $padding;
+        border: dashed 1px $border-color;
+        background-color: var(--adesa-pearl);
+        i.fa {
+            font-size: 40px;
+            color: rgba(0, 0, 0, 0.38);
+
+        }
+        h3 {
+            margin: 5px 0 5px 0;
+            
+        }
+        p {
+            margin: 0;
+        }
+        position: relative;
+        adesa-ui-button {
+            position: absolute;
+            right: $padding;
+            bottom: $padding;
+        }
+    }
+
+    ul.uploaded-files-list {
+        padding: 0;
+        margin: 0;
+        list-style-type: none;
+        li {
+            margin-top: -1px;
+            display: block;
+            padding: 10px 15px;
+            border: solid 1px $border-color;
+            .top,.done {
+                display: flex;
+                justify-content: space-between;
+            }
+            .top {
+                margin-bottom: 30px;
+            }
+            .progress {
+                margin-bottom: 5px;
+                .percentage {
+                    float: right;
+                    display: inline-block;
+                    margin-bottom: 5px;
+                }
+            }
+            .done {
+                .success {
+                    color: $adesa-green;
+                    font-weight: bold;
+                }
+            }
+        }
+    }
+
+}

@@ -1,0 +1,26 @@
+<div class="box">
+    <header  appDnd (fileDropped)="uploadFiles($event)" >
+        <i class="fa fa-cloud-upload" aria-hidden="true"></i>
+        <h3 (click)="onOpenFileSelector($event)">{{title}}</h3>
+        <p>(PDF, JPG or PNG format)</p>
+        <adesa-ui-button size="tertiary" color="ghost-blue" (clicked)="onOpenFileSelector($event)">browse</adesa-ui-button>
+        <input type="file" #fileUploadRef accept=".pdf,.png,.jpg"  multiple (input)="onSelectedFiles($event)" style="display:none;">
+    </header>
+    <ul class="uploaded-files-list">
+        <li *ngFor="let file of files | async">
+            <div class="file">
+                <div class="top">
+                    <span>{{file.name}}</span><span>{{file.size}} KB</span>
+                </div>
+                <div *ngIf="!file.uploaded" class="progress">
+                    <span class="percentage">{{file.progress}} %</span>
+                    <adesa-ui-progress-bar [percentage]="file.progress"></adesa-ui-progress-bar>
+                </div>
+                <div *ngIf="file.uploaded" class="done">
+                    <span class="success">File upload successful</span><span><a href="#">Remove</a></span>
+                </div>
+            </div>
+        </li>
+    </ul>
+
+</div>

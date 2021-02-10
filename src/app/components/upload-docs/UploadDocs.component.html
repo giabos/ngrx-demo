@@ -1,0 +1,26 @@
+
+<adesa-ui-modal [attr.is-open]="isModalOpen" (changed)="onCloseModal()">
+    <h3 slot="header">Upload company documents</h3>
+    <div slot="body">
+       <strong>In order to get full access, we need to verify you are a professional car trader.</strong>
+       <p>Please upload a copy of the company owner’s identity card and the company registration documents.</p>
+
+       <upload-area class="first" title="Drag and drop your ID Card here"></upload-area>
+       <upload-area title="Drag and drop your company documents here"></upload-area>
+    </div>
+    <div class="footer" slot="footer">
+        <adesa-ui-button size="secondary" color="positive" (clicked)="onConfirmUploadDocuments()">Upload documents</adesa-ui-button>
+        <adesa-ui-button size="secondary" color="link-blue" (clicked)="onCloseModal()">Cancel</adesa-ui-button>
+    </div>
+</adesa-ui-modal>
+
+<div class="box">
+    <i class="fa fa-info" aria-hidden="true"></i>
+    <main>
+        <div>
+            <h3>Upload your company documents  {{isModalOpen}}</h3>
+            <p>Your access is currently limited: you can win maximum 1 auction. Upload your company documents to get full access.</p>
+        </div>
+        <adesa-ui-button size="secondary" color="ghost-blue" (clicked)="onOpenModal()"><i class="fa fa-plus-circle" aria-hidden="true"></i> upload documents</adesa-ui-button>
+    </main>
+</div>
