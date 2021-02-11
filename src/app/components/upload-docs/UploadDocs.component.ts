@@ -6,7 +6,7 @@ import { UploadDocumentsService } from './UploadDocuments.service';
   templateUrl: './UploadDocs.component.html',
   styleUrls: ['./UploadDocs.component.scss']
 })
-export class UploadDocsComponent implements OnInit {
+export class UploadDocsComponent {
 
   isModalOpen: string = "true";
 
@@ -23,11 +23,10 @@ export class UploadDocsComponent implements OnInit {
   }
 
   onConfirmUploadDocuments () {
-    console.log("confirm upload");
-    this.isModalOpen = "false"
-  }
-
-  ngOnInit(): void {
+    this.uploadDocumentsService.confirmUploadAllDocuments().subscribe(() => {
+      console.log("confirm upload");
+      this.isModalOpen = "false"
+    });
   }
 
 }

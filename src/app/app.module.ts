@@ -1,6 +1,7 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule, Injector, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import {createCustomElement } from '@angular/elements';
+import { HttpClientModule } from '@angular/common/http';
 
 import { AppComponent } from './app.component';
 import { Demo1Component } from './components/demo1/demo1.component';
@@ -26,6 +27,7 @@ import { DndDirective } from './components/upload-docs/dnd.directive';
   ],
   imports: [
     BrowserModule,
+    HttpClientModule,
     StoreModule.forRoot({ count: counterReducer }),
     StoreDevtoolsModule.instrument({
       maxAge: 25, // Retains last 25 states

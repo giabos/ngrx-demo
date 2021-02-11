@@ -1,0 +1,9 @@
+{
+	"/en/*": {
+		"target": "http://testcotwcarsite",
+		"target2": "https://dev-carsite.cotw.eu",
+		"secure": false,
+		"changeOrigin": true,
+		"logLevel": "debug"
+	}
+}

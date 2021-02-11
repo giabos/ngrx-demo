@@ -5,8 +5,15 @@
        <strong>In order to get full access, we need to verify you are a professional car trader.</strong>
        <p>Please upload a copy of the company owner’s identity card and the company registration documents.</p>
 
-       <upload-area class="first" title="Drag and drop your ID Card here"></upload-area>
-       <upload-area title="Drag and drop your company documents here"></upload-area>
+       <upload-area 
+            class="first" 
+            [documentType]="0"
+            title="Drag and drop your ID Card here">
+        </upload-area>
+       <upload-area 
+            [documentType]="1"
+            title="Drag and drop your company documents here">
+        </upload-area>
     </div>
     <div class="footer" slot="footer">
         <adesa-ui-button size="secondary" color="positive" (clicked)="onConfirmUploadDocuments()">Upload documents</adesa-ui-button>

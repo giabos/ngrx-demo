@@ -2,6 +2,7 @@ $padding: 15px;
 
 $border-color: #e2e2e2;
 $adesa-green: #84bd00;
+$adesa-red: #c33838;
 
 
 
@@ -61,6 +62,10 @@ $adesa-green: #84bd00;
             .done {
                 .success {
                     color: $adesa-green;
+                    font-weight: bold;
+                }
+                .error {
+                    color: $adesa-red;
                     font-weight: bold;
                 }
             }

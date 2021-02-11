@@ -1,5 +1,8 @@
 import { Directive, Output, Input, EventEmitter, HostBinding, HostListener } from '@angular/core';
   
+
+// https://medium.com/@tarekabdelkhalek/how-to-create-a-drag-and-drop-file-uploading-in-angular-78d9eba0b854
+
   @Directive({
     selector: '[appDnd]'
   })

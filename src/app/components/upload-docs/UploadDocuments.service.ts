@@ -1,12 +1,19 @@
 import { Injectable } from '@angular/core';
+import { HttpClient } from '@angular/common/http';
+import { Observable, forkJoin } from 'rxjs';
 
+
+export enum DocumentType {
+    IdDocument = 0,
+    CompanyDocument = 1,
+}
 
 export interface Callback {
     (...args: any[]): any;
 }
 
 export interface ProgressCallback {
-    (idx: number, uploaded: number): void;
+    (idx: number, uploaded: number, total?: number): void;
 }
 
 export interface DoneCallback {
@@ -16,9 +23,10 @@ export interface DoneCallback {
 @Injectable()
 export class UploadDocumentsService {
 
-    constructor() { }
+    constructor(private http: HttpClient) { }
 
     private checkUploadResponse (response: any) {
+        console.log("RESPONSE", response);
         if (response.status === 200) {
             return response.text;
         } else {
@@ -54,15 +62,15 @@ export class UploadDocumentsService {
         });
     }
 
-    private uploadFileMultiPartWithProgress (url: string, file: File, progress: Callback): Promise<any> {
+    private uploadFileMultiPartWithProgress (url: string, formKey: string, file: File, progress: Callback): Promise<any> {
         const formData = new FormData();
-        formData.append("file", file);
+        formData.append(formKey, file);
         return this.fetchWithProgress(url, {
             method: "POST",
             body: formData,
             credentials: "include",
         }, (progressEvent: any) => progress(progressEvent.loaded, progressEvent.total))
-            .then(this.checkUploadResponse).then((a) => JSON.parse(a));
+            .then(this.checkUploadResponse); //.then((a) => JSON.parse(a));
     }
 
 
@@ -100,19 +108,19 @@ export class UploadDocumentsService {
      * 
      * @param {*} url url where to upload the files.
      * @param {*} files List of files to upload.
-     * @param {*} progress callback called to notify upload progressing. params: index of the file in the input list + progression in %
-     * @param {*} done callback called when the file has been completely uploaded. callback param: index of the file in the input list.
+     * @param {*} onProgress callback called to notify upload progressing. params: index of the file in the input list + progression in %
+     * @param {*} onDone callback called when the file has been completely uploaded. callback param: index of the file in the input list.
      * 
      * @returns an error of flags corresponding to the input files array (true: file uploaded successfully, false: file in error)
      */
-    uploadDocuments (url: string, files: File[], progress: ProgressCallback, done: DoneCallback, onError: Callback): Promise<any> {
+    private uploadDocumentsUrl (url: string, formKey: string, files: File[], onProgress: ProgressCallback, onDone: DoneCallback, onError: Callback): Promise<any> {
         return Promise.all(Array.prototype.map.call(files, (file, i) => {
             if (file === null) {
                 return { file: null, successful: true };
             } else {
-                return this.uploadFileWithProgress(url, file.type, file, (uploaded: number) => progress(i, uploaded))
+                return this.uploadFileMultiPartWithProgress (url, formKey, file, (uploaded: number, total: number) => onProgress(i, uploaded, total))
                     .then((res: any) => {
-                        done(i, res);
+                        onDone(i, res);
                         return { file, successful: true };
                     })
                     .catch((e: any) => {
@@ -121,6 +129,41 @@ export class UploadDocumentsService {
                     });
             }
         }));
+    }
+
+    readonly uploadUrls = [
+        "/en/account/saveiddocumenttemp",
+        "/en/account/savecustomerdocumentstemp",
+    ];
+
+    readonly formKeys = [
+        "idCards",
+        "registrationDocuments",
+    ];
+
+    readonly deleteUrls = [
+        "/en/account/RemoveIdDocumentTemp",
+        "/en/account/RemoveCustomerDocumentTemp",
+    ];
+
+    readonly confirmUrls = [
+        "/en/account/saveiddocument",
+        "/en/account/savecustomerdocuments",
+    ];
+
+
+    uploadDocuments (type: DocumentType, files: File[], onProgress: ProgressCallback, onDone: DoneCallback, onError: Callback): Promise<any> {
+        return this.uploadDocumentsUrl(this.uploadUrls[type], this.formKeys[type], files, onProgress, onDone, onError);
+    }
+
+    removeDocument (type: DocumentType, fileName: string): Observable<any> {
+        const queryParams = {fileNames: fileName};
+        return this.http.get(this.deleteUrls[type], {params: queryParams});
+    }
+
+    confirmUploadAllDocuments () : Observable<any> {
+        const requests = this.confirmUrls.map(url => this.http.get(url));
+        return forkJoin(requests);
     }
 
 
